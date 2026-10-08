@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>A Digital Bouquet for You 🌸</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            background: linear-gradient(135deg, #fff0f6 0%, #ffdeeb 100%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 40px 20px;
+            box-sizing: border-box;
+            overflow-x: hidden;
+            text-align: center;
+        }
+
+        .flower {
+            position: fixed;
+            top: -50px;
+            font-size: 24px;
+            user-select: none;
+            pointer-events: none;
+            animation: fall linear infinite;
+            z-index: 1;
+        }
+        @keyframes fall {
+            0% { transform: translateY(0) rotate(0deg); opacity: 1; }
+            100% { transform: translateY(105vh) rotate(360deg); opacity: 0; }
+        }
+
+        .photo-container {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            flex-wrap: wrap;
+            margin-bottom: 30px;
+            z-index: 10;
+        }
+
+        .polaroid {
+            background: white;
+            padding: 12px 12px 35px 12px;
+            border-radius: 4px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+            transition: transform 0.3s ease;
+            max-width: 200px;
+            width: 100%;
+            border: 1px solid #f3d9fa;
+        }
+        .polaroid.one { transform: rotate(-4deg); }
+        .polaroid.two { transform: rotate(3deg); }
+        
+        .polaroid:hover {
+            transform: rotate(0deg) scale(1.05);
+        }
+        .polaroid img {
+            width: 100%;
+            height: 150px;
+            object-fit: cover;
+            border-radius: 2px;
+            border: 1px solid #eee;
+        }
+        .polaroid .caption {
+            font-family: 'Comic Sans MS', cursive, sans-serif;
+            color: #d6336c;
+            font-size: 0.95rem;
+            margin-top: 10px;
+            font-weight: bold;
+        }
+
+        .letter-card {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 35px;
+            border-radius: 24px;
+            box-shadow: 0 15px 35px rgba(214, 51, 108, 0.1);
+            border: 2px solid #ffb3d1;
+            max-width: 500px;
+            width: 100%;
+            box-sizing: border-box;
+            z-index: 10;
+            backdrop-filter: blur(5px);
+        }
+
+        h1 { color: #d6336c; font-size: 1.8rem; margin-top: 0; }
+        p { color: #495057; font-size: 1.1rem; line-height: 1.6; text-align: left; }
+        
+        .flower-button {
+            background-color: #ff6b6b;
+            color: white;
+            font-size: 1.1rem;
+            font-weight: bold;
+            padding: 14px 30px;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            box-shadow: 0 6px 12px rgba(255, 107, 107, 0.3);
+            transition: all 0.2s;
+            margin-top: 15px;
+            display: inline-block;
+        }
+        .flower-button:hover {
+            background-color: #fa5252;
+            transform: translateY(-2px);
+        }
+
+        .love-letter-text {
+            display: none;
+            animation: fadeIn 1s ease forwards;
+            background: #fff0f6;
+            padding: 20px;
+            border-radius: 16px;
+            border-left: 4px solid #ff6b6b;
+            margin-top: 20px;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .sign-off {
+            text-align: right;
+            font-family: 'Comic Sans MS', cursive, sans-serif;
+            color: #d6336c;
+            font-weight: bold;
+            margin-top: 15px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="photo-container">
+        <div class="polaroid one">
+            <img src="https://unsplash.com" alt="Us 1">
+            <div class="caption">My Favorite ❤️</div>
+        </div>
+        <div class="polaroid two">
+            <img src="https://unsplash.com" alt="Us 2">
+            <div class="caption">Always You 🥰</div>
+        </div>
+    </div>
+
+    <div class="letter-card">
+        <h1>A Delivery Just For You 🌸</h1>
+        <p style="text-align: center;">You've been so stressed lately, so I grew a virtual garden to remind you how amazing you are. Click below to unwrap your bouquet and letter!</p>
+        
+        <button class="flower-button" id="openBtn" onclick="openLetter()">💐 Open My Flowers & Letter</button>
+
+        <div class="love-letter-text" id="letterContent">
+            <h3 style="color: #ff6b6b; margin-top: 0; font-size: 1.3rem;">To My Handsome Boy,</h3>
+            <p>I know things have been completely overwhelming and stressful for you lately, but I wanted to make this tiny space just to remind you to breathe.</p>
+            <p>You work so incredibly hard, and I am endlessly proud of everything you do. Take a second to look at these falling flowers, let your shoulders drop, and relax. I'm right here in your corner, always.</p>
+            <p>I love you to the moon and back!</p>
+            <div class="sign-off">— Your Favorite Person 🫶</div>
+        </div>
+    </div>
+
+<script>
+    const flowerTypes = ['🌸', '💮', '🌹', '🌺', '🌻', '🌼', '🌷'];
+
+    setInterval(() => {
+        const flower = document.createElement('div');
+        flower.classList.add('flower');
+        flower.innerHTML = flowerTypes[Math.floor(Math.random() * flowerTypes.length)];
+        flower.style.left = Math.random() * 100 + 'vw';
+        flower.style.animationDuration = (Math.random() * 3 + 5) + 's';
+        flower.style.fontSize = (Math.random() * 15 + 15) + 'px';
+        document.body.appendChild(flower);
+        setTimeout(() => flower.remove(), 8000);
+    }, 600);
+
+    function openLetter() {
+        document.getElementById('letterContent').style.display = 'block';
+        document.getElementById('openBtn').style.display = 'none';
+        
+        for(let i=0; i<30; i++) {
+            setTimeout(() => {
+                const flower = document.createElement('div');
+                flower.classList.add('flower');
+                flower.innerHTML = '🌸';
+                flower.style.left = Math.random() * 100 + 'vw';
+                flower.style.animationDuration = '3s';
+                document.body.appendChild(flower);
+            }, i * 50);
+        }
+    }
+</script>
+
+</body>
+</html>
